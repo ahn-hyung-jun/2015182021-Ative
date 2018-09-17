@@ -49,7 +49,7 @@ def move_3_to_4():
     while (x1 > x2):
         clear_canvas()
         grass.draw(400, 30)
-        character.clip_draw(frame * 100, 100, 100, 100, x1, y1)
+        character.clip_draw(frame * 100, 0, 100, 100, x1, y1)
         update_canvas()
         frame = (frame + 1) % 8
         x1 -= 5
@@ -168,7 +168,7 @@ def move_10_to_1():
     while (x1 > x2):
         clear_canvas()
         grass.draw(400, 30)
-        character.clip_draw(frame * 100, 100, 100, 100, x1, y1)
+        character.clip_draw(frame * 100, 0, 100, 100, x1, y1)
         update_canvas()
         frame = (frame + 1) % 8
         x1 -= 5
@@ -177,15 +177,15 @@ def move_10_to_1():
         get_events()
 
 def move_character():
-    #move_1_to_2()
-    #move_2_to_3()
-    #move_3_to_4()
-    #move_4_to_5()
-    #move_5_to_6()
-    #move_6_to_7()
-    #move_7_to_8()
-    #move_8_to_9()
-    #move_9_to_10()
+    move_1_to_2()
+    move_2_to_3()
+    move_3_to_4()
+    move_4_to_5()
+    move_5_to_6()
+    move_6_to_7()
+    move_7_to_8()
+    move_8_to_9()
+    move_9_to_10()
     move_10_to_1()
 
 
