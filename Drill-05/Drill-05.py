@@ -193,7 +193,4 @@ while True:
     move_character()
 
 
-
-
-
 close_canvas()
