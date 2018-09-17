@@ -83,7 +83,7 @@ def move_5_to_6():
     while (x1 > x2):
         clear_canvas()
         grass.draw(400, 30)
-        character.clip_draw(frame * 100, 100, 100, 100, x1, y1)
+        character.clip_draw(frame * 100, 0, 100, 100, x1, y1)
         update_canvas()
         frame = (frame + 1) % 8
         x1 -= 5
