@@ -165,14 +165,14 @@ def move_10_to_1():
     y_plus = y2 - y1
     r = y_plus / x_plus
     frame = 0
-    while (x1 < x2):
+    while (x1 > x2):
         clear_canvas()
         grass.draw(400, 30)
         character.clip_draw(frame * 100, 100, 100, 100, x1, y1)
         update_canvas()
         frame = (frame + 1) % 8
-        x1 += 5
-        y1 += 5 * r
+        x1 -= 5
+        y1 -= 5 * r
         delay(0.05)
         get_events()
 
@@ -185,7 +185,7 @@ def move_character():
     #move_6_to_7()
     #move_7_to_8()
     #move_8_to_9()
-    move_9_to_10()
+    #move_9_to_10()
     move_10_to_1()
 
 
