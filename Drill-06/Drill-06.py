@@ -22,6 +22,16 @@ def handle_events():
 def move_character():
     pass
 
+def make_cursor():
+    clear_canvas()
+    kpu_ground.draw(KPU_WIDTH/2,KPU_HEIGHT/2)
+    hand_arrow.draw(x, y)
+    update_canvas()
+    delay(0.05)
+    handle_events()
+
+
+
 open_canvas(KPU_WIDTH, KPU_HEIGHT)
 
 kpu_ground = load_image('KPU_GROUND.png')
@@ -34,6 +44,7 @@ frame = 0
 while running:
     handle_events()
     move_character()
+    make_cursor()
 
 
 close_canvas()
