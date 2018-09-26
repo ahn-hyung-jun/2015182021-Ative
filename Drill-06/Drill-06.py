@@ -2,6 +2,8 @@ from pico2d import *
 
 KPU_WIDTH, KPU_HEIGHT = 1280, 1024
 
+global cx, cy
+
 def handle_events():
     global running
     global x, y
@@ -15,11 +17,35 @@ def handle_events():
                 running=False
         elif event.type == SDL_MOUSEMOTION:
             x, y = event.x, KPU_HEIGHT -1 -event.y
+            make_cursor()
         elif event.type == SDL_MOUSEBUTTONDOWN:
             if event.button == SDL_BUTTON_LEFT:
                 mx, my = event.x, KPU_HEIGHT -1 -event.y
+                move_character()
 
 def move_character():
+    move_to_right()
+    move_to_left()
+
+def move_to_right():
+    x1, y1, x2, y2 = cx, cy, mx, my
+    if(x1<x2):
+        x_plus = x2 - x1
+        y_plus = y2 - y1
+        r = y_plus / x_plus
+        frame = 0
+        while (x1 < x2):
+            clear_canvas()
+            kpu_ground.draw(KPU_WIDTH//2, KPU_HEIGHT//2)
+            character.clip_draw(frame * 100, 0, 100, 100, x1, y1)
+            update_canvas()
+            frame = (frame + 1) % 8
+            x1 += 5
+            y1 += 5 * r
+            delay(0.05)
+            handle_events()
+
+def move_to_left():
     pass
 
 def make_cursor():
@@ -39,12 +65,15 @@ character = load_image('animation_sheet.png')
 hand_arrow = load_image('hand_arrow.png')
 
 running=True
-frame = 0
+
+
 
 while running:
     handle_events()
-    move_character()
-    make_cursor()
+
+
+
+
 
 
 close_canvas()
