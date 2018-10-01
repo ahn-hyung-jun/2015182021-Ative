@@ -4,24 +4,20 @@ import random
 KPU_WIDTH, KPU_HEIGHT = 1280, 1024
 
 def move_character(p1, p2):
+    frame = 0
     for i in range(0,100+1,2):
         t = i / 100
         x = (1-t)*p1[0]+t*p2[0]
         y = (1-t)*p1[1]+t*p2[1]
-        frame = 0
-        clear_canvas()
-        kpu_ground.draw(KPU_WIDTH // 2, KPU_HEIGHT // 2)
-        character.clip_draw(frame * 100, 0, 100, 100, x, y)
-        update_canvas()
-        frame = (frame + 1) % 8
-        delay(0.05)
+        draw_character(x, y)
 
-
+def draw_character(x,y)
+    pass
 
 
 
 size = 20
-points = [(random.randint(-500, 500), random.randint(-350, 350)) for i in range(size)]
+points = [(random.randint(0, 1000), random.randint(0, 800)) for i in range(size)]
 n = 1
 
 open_canvas(KPU_WIDTH, KPU_HEIGHT)
