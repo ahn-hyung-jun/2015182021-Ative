@@ -3,7 +3,7 @@ KPU_WIDTH, KPU_HEIGHT = 1280, 1024
 import random
 
 
-def move_character(x,y)
+def move_character(x,y):
     pass
 
 def draw_curve_5_points(p1, p2, p3, p4, p5):
@@ -43,11 +43,14 @@ open_canvas(KPU_WIDTH, KPU_HEIGHT)
 kpu_ground = load_image('KPU_GROUND.png')
 character = load_image('animation_sheet.png')
 
+
 p1 = (-300,200)
 p2 = (400,350)
 p3 = (300,-300)
 p4 = (-200,-200)
 
+
+points = [(random.randint(-600,600),random.randint(-500,500)) for n in range(10)]
 while True:
  draw_curve_5_points(p1, p2, p3, p4, p1)
 
