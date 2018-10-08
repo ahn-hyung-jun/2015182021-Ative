@@ -17,11 +17,11 @@ class Boy:
         self.frame = random.randint(0,7)
 
     def update(self):
-        self.frame = (self.frame + 1)%8
+        self.frame = (self.frame + 1) % 8
         self.x += 5
 
     def draw(self):
-        self.image.clip_draw(self.frame*100,0,100,100,self.x,self.y)
+        self.image.clip_draw(self.frame * 100, 0, 100, 100, self.x, self.y)
 
 class Ball:
     def __init__(self):
