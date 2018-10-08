@@ -29,6 +29,20 @@ class Ball:
         self.speed = random.randint(10,20)
         self.ball_size = random.randint(0,1)
 
+    def update(self):
+        if(self.ball_size == 0):
+            self.image = load_image('ball41x41.png')
+        elif(self.ball_size == 1):
+            self.image = load_image('ball21x21.png')
+
+        self.y = self.y - self.speed
+    
+
+
+
+
+
+
 
 
 def handle_events():
