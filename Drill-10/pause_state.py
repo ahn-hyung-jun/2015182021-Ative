@@ -17,15 +17,21 @@ def exit():
     global image
     del(image)
 
+global time
+time = 0
 
 def update():
-    pass
-
+    global time
+    time = time + 1
+    delay(0.3)
 
 def draw():
     global image
     clear_canvas()
-    image.draw(400,300)
+    if time%2 == 0:
+        image.draw(400, 300)
+    main_state.grass.draw()
+    main_state.boy.draw()
     update_canvas()
 
 
