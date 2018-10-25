@@ -113,13 +113,13 @@ class DashState:
     @staticmethod
     def enter(boy, event):
         if event == RIGHT_DOWN:
-            boy.velocity += 2
+            boy.velocity += 1
         elif event == LEFT_DOWN:
-            boy.velocity -= 2
+            boy.velocity -= 1
         elif event == RIGHT_UP:
-            boy.velocity -= 2
+            boy.velocity -= 1
         elif event == LEFT_UP:
-            boy.velocity += 2
+            boy.velocity += 1
         boy.timer = 200
         boy.dir = boy.velocity
 
@@ -132,10 +132,11 @@ class DashState:
     def do(boy):
         boy.frame = (boy.frame + 1) % 8
         boy.timer -= 1
-        boy.x += boy.velocity
+        boy.x += boy.velocity*3
         boy.x = clamp(25, boy.x, 1600 - 25)
         if boy.timer == 0:
             boy.add_event(DASH_TIMER)
+            
     @staticmethod
     def draw(boy):
         if boy.velocity == 1:
