@@ -4,7 +4,7 @@ from ball import Ball
 import game_world
 
 # Boy Event
-RIGHT_DOWN, LEFT_DOWN, RIGHT_UP, LEFT_UP, SLEEP_TIMER, SPACE, SHIFT= range(7)
+RIGHT_DOWN, LEFT_DOWN, RIGHT_UP, LEFT_UP, SLEEP_TIMER, SPACE, SHIFT_UP, SHIFT_DOWN, DASH_TIMER = range(9)
 
 key_event_table = {
     (SDL_KEYDOWN, SDLK_RIGHT): RIGHT_DOWN,
@@ -12,7 +12,8 @@ key_event_table = {
     (SDL_KEYUP, SDLK_RIGHT): RIGHT_UP,
     (SDL_KEYUP, SDLK_LEFT): LEFT_UP,
     (SDL_KEYDOWN, SDLK_SPACE): SPACE,
-    (SDL_KEYDOWN, SDLK_LSHIFT): SHIFT
+    (SDL_KEYDOWN, SDLK_LSHIFT): SHIFT_DOWN,
+    (SDL_KEYUP, SDLK_LSHIFT): SHIFT_UP
 }
 
 
@@ -23,13 +24,13 @@ class IdleState:
     @staticmethod
     def enter(boy, event):
         if event == RIGHT_DOWN:
-            boy.velocity += 1
+            boy.velocity = 0
         elif event == LEFT_DOWN:
-            boy.velocity -= 1
+            boy.velocity = 0
         elif event == RIGHT_UP:
-            boy.velocity -= 1
+            boy.velocity = 0
         elif event == LEFT_UP:
-            boy.velocity += 1
+            boy.velocity = 0
         boy.timer = 1000
 
     @staticmethod
@@ -109,15 +110,45 @@ class SleepState:
                                           100)
 
 class DashState:
-    pass
+    @staticmethod
+    def enter(boy, event):
+        if event == RIGHT_DOWN:
+            boy.velocity += 1
+        elif event == LEFT_DOWN:
+            boy.velocity -= 1
+        elif event == RIGHT_UP:
+            boy.velocity -= 1
+        elif event == LEFT_UP:
+            boy.velocity += 1
+        boy.timer = 200
+        boy.dir = boy.velocity
+
+    @staticmethod
+    def exit(boy, event):
+       pass
+
+    @staticmethod
+    def do(boy):
+        boy.frame = (boy.frame + 1) % 8
+        boy.timer -= 1
+        boy.x += boy.velocity*3
+        boy.x = clamp(25, boy.x, 1600 - 25)
+        if boy.timer == 0:
+            boy.add_event(DASH_TIMER)
+    @staticmethod
+    def draw(boy):
+        if boy.velocity == 1:
+            boy.image.clip_draw(boy.frame * 100, 100, 100, 100, boy.x, boy.y)
+        else:
+            boy.image.clip_draw(boy.frame * 100, 0, 100, 100, boy.x, boy.y)
 
 next_state_table = {
     IdleState: {RIGHT_UP: RunState, LEFT_UP: RunState, RIGHT_DOWN: RunState, LEFT_DOWN: RunState,
-                SLEEP_TIMER: SleepState, SPACE: IdleState, SHIFT: DashState},
-    RunState: {RIGHT_UP: IdleState, LEFT_UP: IdleState, LEFT_DOWN: IdleState, RIGHT_DOWN: IdleState, SPACE: RunState, SHIFT:DashState},
-    SleepState: {RIGHT_UP: RunState, LEFT_UP: RunState, RIGHT_DOWN: RunState, LEFT_DOWN: RunState, SPACE: IdleState, SHIFT:DashState},
-    DashState: {RIGHT_UP: DashState, LEFT_UP: DashState, RIGHT_DOWN: DashState, LEFT_DOWN: DashState,
-                SPACE: DashState, SHIFT: DashState}
+                SLEEP_TIMER: SleepState, SPACE: IdleState, SHIFT_DOWN: DashState, SHIFT_UP: IdleState},
+    RunState: {RIGHT_UP: IdleState, LEFT_UP: IdleState, LEFT_DOWN: IdleState, RIGHT_DOWN: IdleState, SPACE: RunState, SHIFT_DOWN:DashState, SHIFT_UP:RunState},
+    SleepState: {RIGHT_UP: RunState, LEFT_UP: RunState, RIGHT_DOWN: RunState, LEFT_DOWN: RunState, SPACE: IdleState, SHIFT_DOWN:DashState},
+    DashState: {RIGHT_UP: RunState, LEFT_UP: RunState, RIGHT_DOWN: RunState, LEFT_DOWN: RunState,
+                SPACE: DashState, SHIFT_DOWN: DashState, SHIFT_UP: RunState, DASH_TIMER: RunState}
 }
 
 class Boy:
