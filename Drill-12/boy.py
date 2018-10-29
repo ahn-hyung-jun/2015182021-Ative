@@ -3,6 +3,7 @@ from pico2d import *
 from ball import Ball
 
 import game_world
+import math
 import time
 
 # Boy Run Speed
@@ -16,6 +17,12 @@ RUN_SPEED_PPS = (RUN_SPEED_MPS*PIXEL_PER_METER)
 TIME_PER_ACTION = 0.5
 ACTION_PER_TIME = 1.0 / TIME_PER_ACTION
 FRAMES_PER_ACTION = 8
+
+GHOST_RAD = 720
+
+
+
+
 
 
 
@@ -115,6 +122,8 @@ class SleepState:
     @staticmethod
     def do(boy):
         boy.frame = (boy.frame + FRAMES_PER_ACTION * ACTION_PER_TIME * game_framework.frame_time) % 8
+        boy.ghost_angle += GHOST_RAD*game_framework.frame_time
+        boy.ghost_image.opacify(0.1)
 
     @staticmethod
     def draw(boy):
@@ -122,6 +131,9 @@ class SleepState:
             boy.image.clip_composite_draw(int(boy.frame) * 100, 300, 100, 100, 3.141592 / 2, '', boy.x - 25, boy.y - 25, 100, 100)
         else:
             boy.image.clip_composite_draw(int(boy.frame) * 100, 200, 100, 100, -3.141592 / 2, '', boy.x + 25, boy.y - 25, 100, 100)
+        boy.ghost_image.clip_draw(int(boy.frame) * 100, 300, 100, 100,
+                                    boy.x + 100*math.cos(math.radians(boy.ghost_angle)), boy.y + 100*math.sin(math.radians(boy.ghost_angle)))
+
 
 
 
@@ -145,6 +157,7 @@ class Boy:
         self.dir = 1
         self.velocity = 0
         self.frame = 0
+        self.ghost_angle = 0
         self.event_que = []
         self.cur_state = IdleState
         self.cur_state.enter(self, None)
