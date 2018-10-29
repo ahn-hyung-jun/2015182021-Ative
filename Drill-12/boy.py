@@ -4,6 +4,7 @@ from ball import Ball
 
 import game_world
 import math
+import random
 import time
 
 # Boy Run Speed
@@ -123,7 +124,8 @@ class SleepState:
     def do(boy):
         boy.frame = (boy.frame + FRAMES_PER_ACTION * ACTION_PER_TIME * game_framework.frame_time) % 8
         boy.ghost_angle += GHOST_RAD*game_framework.frame_time
-        boy.ghost_image.opacify(0.1)
+        boy.rand = random.randint(0,10)
+        boy.ghost_image.opacify(boy.rand*0.1)
 
     @staticmethod
     def draw(boy):
@@ -155,6 +157,7 @@ class Boy:
         self.ghost_image = load_image('animation_sheet.png')
         self.font = load_font('ENCR10B.TTF', 16)
         self.dir = 1
+        self.rand = 0
         self.velocity = 0
         self.frame = 0
         self.ghost_angle = 0
