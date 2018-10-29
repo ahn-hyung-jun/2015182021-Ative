@@ -3,23 +3,27 @@ import json
 import os
 
 from pico2d import *
-
 import game_framework
-from map import Map
-import hero
+import game_world
+
+from boy import Boy
+from grass import Grass
+
 
 name = "MainState"
 
-maps = None
+boy = None
 
 def enter():
-    global maps
-    maps = [[Map(i,j) for i in range(100)] for j in range(100)]
+    global boy
+    boy = Boy()
+    grass = Grass()
+    game_world.add_object(grass, 0)
+    game_world.add_object(boy, 1)
+
 
 def exit():
-    pass
-
-
+    game_world.clear()
 
 def pause():
     pass
@@ -37,19 +41,21 @@ def handle_events():
         elif event.type == SDL_KEYDOWN and event.key == SDLK_ESCAPE:
                 game_framework.quit()
         else:
-            pass
+            boy.handle_event(event)
 
 
 def update():
-    pass
+    for game_object in game_world.all_objects():
+        game_object.update()
+    # fill here
+
 
 def draw():
     clear_canvas()
-
-    for i in range(100):
-        for j in range(100):
-            maps[j][i].draw()
+    for game_object in game_world.all_objects():
+        game_object.draw()
     update_canvas()
+
 
 
 
