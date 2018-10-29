@@ -47,6 +47,7 @@ class IdleState:
             boy.velocity += RUN_SPEED_PPS
         boy.timer = get_time()
 
+
     @staticmethod
     def exit(boy, event):
         if event == SPACE:
